@@ -2,12 +2,14 @@
 .gallery-js-container,
 .gallery-hs-overflow,
 .gjs-thumb-wrapper,
-.gjs-thumb-container {
+.gjs-thumb-container,
+.gjs-thumbnail {
 	position: relative;
 	overflow: hidden;
 }
 
 .gallery-js-wrapper {
+	margin-bottom: 1.5em;
 	width: 100%;
 }
 
@@ -16,7 +18,8 @@
 }
 
 .gallery-js-overflow {
-	height: 540px;
+	background: #fafafa;
+	max-height: 720px;
 }
 
 .gjs-image-wrapper img {
@@ -26,7 +29,7 @@
 }
 
 .gjs-thumb-wrapper {
-
+	background: #f5f5f5;
 }
 
 .gjs-thumb-container {
@@ -35,8 +38,19 @@
 
 .gjs-thumbnail {
 	float: left;
+	width: 120px;
+	height: 68px;
+}
+
+.gjs-thumbnail img {
+	height: auto;
+	width: 100%;
 }
 
 .gjs-thumbnail.current {
 
+}
+
+.gjs-arrow {
+	
 }

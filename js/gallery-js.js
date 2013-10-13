@@ -33,6 +33,9 @@ galleryJS = function(obj, option) {
 		settings.stepCount = 0;
 		settings.slideCount = 0;
 
+	// Defining the Images
+		var galleryImages = new Array();
+
 	// Defining the Variables
 		var parent = gallery.parentNode;
 	// Creating and Inserting the Gallery Container
@@ -66,32 +69,42 @@ galleryJS = function(obj, option) {
 				} else if (image.tagName === 'A') {
 					source = image.getAttribute('href');
 				}
-			// Function: Wrapping Every Image in a Image Wrapper Div
-				var wrapImage = function() {
-					var imageWrapper = document.createElement('div');
-					imageWrapper.classList.add(gJs.imageWrapperClass);
-					imageWrapper.setAttribute(gJs.imageSourceAttr, source);
-					imageWrapper.setAttribute(gJs.imageIdAttr, imageId)
-					imageParent.insertBefore(imageWrapper, image);
-					imageWrapper.appendChild(image);					
-				}
-			// Function: Creating the First Image
-				var createImage = function(){
-					if(imageIndex === 0 && image.tagName !== 'IMG') {
-						var img = document.createElement('img');
-						img.setAttribute('src', source);
-						img.classList.add(gJs.currentClass);
-						image.appendChild(img);
-					}
-				}
-			// Function: Creating the Image Init Stack
-				var initImage = function() {
-					wrapImage();
-					createImage();
-				}
-			// Function: Initiation
-				initImage();
+			// Push Each Image to the GalleryImages Array
+				galleryImages.push(source);
 		}
+
+	// Config: Remove the Images and Create the First Image
+		// Function: Remove Image from DOM 
+			var domRemoveImage = function() {
+				var imagesLength = images.length;
+				for(var idx = imagesLength -1; idx >= 0; idx--) {
+					var image = images[idx];
+					image.parentNode.removeChild(image);
+				}
+			}
+		// Function: Creating the First Image
+			var createImage = function(){
+				domRemoveImage();
+				var firstImageSource = galleryImages[0];
+				var firstImage = document.createElement('img');
+				firstImage.setAttribute('src', firstImageSource);
+				gallery.appendChild(firstImage);
+				wrapImage(firstImage);
+			}
+		// Function: Wrapping Every Image in a Image Wrapper Div
+			var wrapImage = function(image) {
+				var imageWrapper = document.createElement('div');
+				imageWrapper.classList.add(gJs.imageWrapperClass);
+				imageParent.insertBefore(imageWrapper, image);
+				imageWrapper.appendChild(image);					
+			}
+		// Function: Creating the Image Init Stack
+			var initImage = function() {
+				createImage();
+			}
+		// Function: Initiation
+			initImage();
+
 	// Config: The Thumbnails 
 		// Defining the Variables
 			var thumbImagesWidth = 0;
@@ -103,9 +116,8 @@ galleryJS = function(obj, option) {
 			thumbContainer.classList.add(gJs.thumbContainerClass);
 			thumbWrapper.appendChild(thumbContainer);
 		// Creating the Thumbnails
-			for(thumbIndex = 0; thumbIndex < images.length; thumbIndex++) {
-				var image = images[thumbIndex];
-				var thumbSource = image.getAttribute(gJs.thumbAttr);
+			for(thumbIndex = 0; thumbIndex < galleryImages.length; thumbIndex++) {
+				var thumbSource = galleryImages[thumbIndex];
 				var thumb = document.createElement('div');
 				thumb.classList.add(gJs.thumbClass);
 				// Adding the Current Class
@@ -115,11 +127,12 @@ galleryJS = function(obj, option) {
 				thumbContainer.appendChild(thumb);
 				var thumbImage = document.createElement('img');
 				thumbImage.setAttribute('src', thumbSource);
-				thumbImage.setAttribute('width', 90);
-				thumbImage.setAttribute('height', 60);
+				thumbImage.setAttribute('width', 120);
+				thumbImage.setAttribute('height', 68);
 				thumb.appendChild(thumbImage);
 				thumbImagesWidth = thumbImagesWidth + thumbImage.clientWidth;
 			}
+
 		// Adjusting the Size of the Thumb Container
 			thumbContainer.style.width = thumbImagesWidth+'px';
 		// Creating the Thumbnail Arrows
@@ -150,15 +163,16 @@ galleryJS = function(obj, option) {
 			var galleryHeight = gallery.clientHeight;
 			var thumbWrapperHeight = thumbWrapper.clientHeight;
 			galleryWrapper.style.height = (galleryHeight + thumbWrapperHeight) + 'px';
-			console.log(thumbWrapper);
 		};
 	// Config: Initialization Stack
 		gJs.galleryInitStack = function() {
 			gJs.updateGallerySize();
 		};
 
-	gJs.galleryInitStack();
+	gJs.galleryInitStack();			
+
 	console.log(settings);
+	console.log(galleryImages);
 }
 
 var galleries = document.getElementsByClassName('gallery-js');
