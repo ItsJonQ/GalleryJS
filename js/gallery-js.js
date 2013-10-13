@@ -28,6 +28,11 @@ galleryJS = function(obj, option) {
 		options.keyboardNav = option.keyboardNav;
 		options.captions = option.captions;
 
+	// Defining the Settings
+		var settings = {};
+		settings.stepCount = 0;
+		settings.slideCount = 0;
+
 	// Defining the Variables
 		var parent = gallery.parentNode;
 	// Creating and Inserting the Gallery Container
@@ -48,6 +53,7 @@ galleryJS = function(obj, option) {
 
 	// Config: the Images
 		var images = gallery.getElementsByClassName(gJs.imageClass);
+		settings.slideCount = images.length;
 		for(imageIndex = 0; imageIndex < images.length; imageIndex++) {
 			// Defining the Variables
 				var source;
@@ -138,6 +144,21 @@ galleryJS = function(obj, option) {
 			}
 			container.appendChild(arrow);
 		}
+	// Config: Readjust Gallery Size
+		gJs.updateGallerySize = function() {
+			var galleryWrapperHeight = galleryWrapper.clientHeight;
+			var galleryHeight = gallery.clientHeight;
+			var thumbWrapperHeight = thumbWrapper.clientHeight;
+			galleryWrapper.style.height = (galleryHeight + thumbWrapperHeight) + 'px';
+			console.log(thumbWrapper);
+		};
+	// Config: Initialization Stack
+		gJs.galleryInitStack = function() {
+			gJs.updateGallerySize();
+		};
+
+	gJs.galleryInitStack();
+	console.log(settings);
 }
 
 var galleries = document.getElementsByClassName('gallery-js');
