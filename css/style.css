@@ -1,11 +1,25 @@
 .gallery-js-wrapper,
 .gallery-js-container,
-.gallery-hs-overflow,
+.gallery-js-overflow,
+.gjs-nav-container,
 .gjs-thumb-wrapper,
 .gjs-thumb-container,
 .gjs-thumbnail {
 	position: relative;
 	overflow: hidden;
+}
+
+.gjs-arrow {
+	-webkit-transition: all 0.20s ease;
+	-moz-transition: all 0.20s ease;
+	-ms-transition: all 0.20s ease;
+	-o-transition: all 0.20s ease;
+	transition: all 0.20s ease;
+}
+
+.gjs-arrow,
+.gjs-thumbnail {
+	cursor: pointer;
 }
 
 .gallery-js-wrapper {
@@ -29,6 +43,7 @@
 }
 
 .gjs-thumb-wrapper {
+	border-top: 1px solid #EEE;
 	background: #f5f5f5;
 }
 
@@ -37,6 +52,7 @@
 }
 
 .gjs-thumbnail {
+	opacity: 0.6;
 	float: left;
 	width: 120px;
 	height: 68px;
@@ -47,10 +63,43 @@
 	width: 100%;
 }
 
-.gjs-thumbnail.current {
-
+.gjs-thumbnail:hover {
+	opacity: 0.8;
 }
 
+.gjs-thumbnail.current {
+	opacity: 1;
+}
+
+.gjs-nav-container {
+	bottom: 0;
+	left: 0;
+	position: absolute;
+	right: 0;
+	top: 0;
+	z-index: 3;
+}
+
+.gjs-nav-container .gjs-arrow {
+	width: 60px;
+	height: 100%;
+	opacity: 0.4;
+	background: #FFF;
+}
+
+
 .gjs-arrow {
-	
+	position: absolute;
+}
+
+.gjs-arrow:hover {
+	opacity: 0.6;
+}
+
+.gjs-arrow.arrow-left {
+	left: 0;
+}
+
+.gjs-arrow.arrow-right {
+	right: 0;
 }

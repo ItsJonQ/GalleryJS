@@ -6,10 +6,12 @@ gJs.imageWrapperClass = 'gjs-image-wrapper';
 gJs.thumbWrapperClass = 'gjs-thumb-wrapper';
 gJs.thumbContainerClass = 'gjs-thumb-container';
 gJs.thumbClass = 'gjs-thumbnail';
+gJs.galleryNavContainer = 'gjs-nav-container';
 gJs.thumbArrowClass = 'gjs-arrow';
 gJs.arrowClass = 'gjs-arrow';
 gJs.arrowLeftClass = 'arrow-left';
 gJs.arrowRightClass = 'arrow-right';
+gJs.arrowLinkClass = 'gjs-link-arrow';
 
 gJs.imageSourceAttr = 'data-image-source';
 gJs.imageIdAttr = 'data-image-id';
@@ -147,6 +149,9 @@ galleryJS = function(obj, option) {
 				thumbWrapper.appendChild(thumbArrow);
 			}			
 	// Config: The Gallery Arrows
+		var arrowContainer = document.createElement('div');
+		arrowContainer.classList.add(gJs.galleryNavContainer);
+		gallery.appendChild(arrowContainer);
 		for(arrowIndex = 0; arrowIndex < 2; arrowIndex++) {
 			var arrow = document.createElement('div');
 			arrow.classList.add(gJs.arrowClass);
@@ -155,7 +160,10 @@ galleryJS = function(obj, option) {
 			} else {
 				arrow.classList.add(gJs.arrowRightClass);
 			}
-			container.appendChild(arrow);
+			arrowContainer.appendChild(arrow);
+			var arrowLink = document.createElement('a');
+			arrowLink.classList.add(gJs.arrowLinkClass);
+			arrow.appendChild(arrowLink);
 		}
 	// Config: Readjust Gallery Size
 		gJs.updateGallerySize = function() {
