@@ -19,7 +19,7 @@ gJs.thumbAttr = 'data-gjs-thumb';
 
 gJs.currentClass = 'current';
 
-galleryJS = function(obj, option) {
+galleryJs = function(obj, option) {
 	var imageIndex, thumbIndex, thumbArrowIndex, arrowIndex;
 	var gallery = obj;
 
@@ -37,6 +37,7 @@ galleryJS = function(obj, option) {
 
 	// Defining the Images
 		var galleryImages = new Array();
+		var galleryThumbImages = new Array();
 
 	// Defining the Variables
 		var parent = gallery.parentNode;
@@ -98,7 +99,10 @@ galleryJS = function(obj, option) {
 				var imageWrapper = document.createElement('div');
 				imageWrapper.classList.add(gJs.imageWrapperClass);
 				imageParent.insertBefore(imageWrapper, image);
-				imageWrapper.appendChild(image);					
+				imageWrapper.appendChild(image);
+				if(options.imgHeight) {
+					imageWrapper.style.height = options.imgHeight + 'px';
+				}			
 			}
 		// Function: Creating the Image Init Stack
 			var initImage = function() {
@@ -133,6 +137,7 @@ galleryJS = function(obj, option) {
 				thumbImage.setAttribute('height', 68);
 				thumb.appendChild(thumbImage);
 				thumbImagesWidth = thumbImagesWidth + thumbImage.clientWidth;
+				galleryThumbImages.push(thumb);
 			}
 
 		// Adjusting the Size of the Thumb Container
@@ -179,14 +184,36 @@ galleryJS = function(obj, option) {
 
 	gJs.galleryInitStack();			
 
+	// Action: Change Slide
+		galleryJsChangeSlider = function(slideIndex) {
+			var newImageSource = galleryImages[slideIndex];
+			var image = gallery.getElementsByTagName('img')[0];
+			image.setAttribute('src',newImageSource);
+		}
+
+	// Action: Change Slide on Thumbnail Click
+		for(var i = 0; i < galleryThumbImages.length; i++) {
+			var thumb = galleryThumbImages[i];
+			thumb.addEventListener('click', function(){
+				var siblings = this.parentNode.childNodes;
+				for(var i = 0; i < siblings.length; i++) {
+					var sib = siblings[i];
+					sib.classList.remove(gJs.currentClass);
+				}
+				this.classList.add(gJs.currentClass);
+				var index = galleryThumbImages.indexOf(this);
+				galleryJsChangeSlider(index);
+			}, false);
+		}
+
 	console.log(settings);
 	console.log(galleryImages);
 }
 
 var galleries = document.getElementsByClassName('gallery-js');
 for(i = 0; i < galleries.length; i++) {
-	galleryJS(galleries[i], {
+	galleryJs(galleries[i], {
 		imgWidth: 960,
-		imgHeight: 540
+		imgHeight: 480
 	});
 }
