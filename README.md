@@ -1,0 +1,1 @@
+### GalleryJS - A Vanilla Javascript Gallery Plugin ###

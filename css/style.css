@@ -1,0 +1,35 @@
+.gallery-js-wrapper,
+.gallery-js-container,
+.gallery-hs-overflow,
+.gallery-thumb-wrapper {
+	position: relative;
+	overflow: hidden;
+}
+
+.gallery-js-wrapper {
+	width: 100%;
+}
+
+.gallery-js-container {
+
+}
+
+.gallery-js-overflow {
+
+}
+
+.gjs-thumb-wrapper {
+
+}
+
+.gjs-thumb-container {
+	margin: 0 auto;
+}
+
+.gjs-thumbnail {
+	float: left;
+}
+
+.gjs-thumbnail.current {
+
+}
