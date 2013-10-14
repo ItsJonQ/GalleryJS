@@ -84,6 +84,7 @@ galleryJs = function(obj, option) {
 			// Push Each Image to the GalleryImages Array
 				galleryImages.push(source);
 		}
+		// settings.slideCount = settings.slideCount - 1;
 
 	// Config: Remove the Images and Create the First Image
 		// Function: Remove Image from DOM 
@@ -215,35 +216,74 @@ galleryJs = function(obj, option) {
 
 	gJs.galleryInitStack();
 
-	// Action: Next Slide
-		galleryJsNextSlide = function() {
-			
-		}
-
 	// Action: Change Slide
 		galleryJsChangeSlideTo = function(slideIndex) {
 			var newImageSource = galleryImages[slideIndex];
 			var image = gallery.getElementsByTagName('img')[0];
 			image.setAttribute('src',newImageSource);
-		}
-
-	// Action: Change Slide on Thumbnail Click
-		for(var i = 0; i < galleryThumbImages.length; i++) {
-			var thumb = galleryThumbImages[i];
-			thumb.addEventListener('click', function(){
-				var siblings = this.parentNode.childNodes;
+			for(var i = 0; i < galleryThumbImages.length; i++) {
+				var thumb = galleryThumbImages[slideIndex];
+				var siblings = thumb.parentNode.childNodes;
 				for(var i = 0; i < siblings.length; i++) {
 					var sib = siblings[i];
 					sib.classList.remove(gJs.currentClass);
 				}
-				this.classList.add(gJs.currentClass);
+				thumb.classList.add(gJs.currentClass);
+			}
+		}
+
+	// Action: Previous Slide
+		galleryJsPreviousSlide = function() {
+			settings.stepCount = settings.stepCount - 1;
+			if(settings.stepCount <= -1) {
+				settings.stepCount = 0;
+			} else {
+				galleryJsChangeSlideTo(settings.stepCount);				
+			}
+		}
+
+	// Action: Next Slide
+		galleryJsNextSlide = function() {
+			settings.stepCount = settings.stepCount + 1;
+			if(settings.stepCount >= settings.slideCount) {
+				settings.stepCount = settings.slideCount - 1;
+			} else {
+				galleryJsChangeSlideTo(settings.stepCount);	
+			}			
+		}
+
+	// Click Action: Current Slide
+		arrowContainer.addEventListener('click', function(){
+			galleryJsNextSlide();
+		}, false);
+
+	// Click Action: Previous Slide
+		var galleryPrevClick = gallery.getElementsByClassName('arrow-left')[0];
+		galleryPrevClick.addEventListener('click', function(){
+			event.stopPropagation();
+			galleryJsPreviousSlide();
+		}, false);
+
+	// Click Action: Next Slide
+		var galleryNextClick = gallery.getElementsByClassName('arrow-right')[0];
+		galleryNextClick.addEventListener('click', function(){
+			event.stopPropagation();
+			galleryJsNextSlide();
+		}, false);
+
+	// Click Action: Change Slide on Thumbnail Click
+		for(var i = 0; i < galleryThumbImages.length; i++) {
+			var thumb = galleryThumbImages[i];
+			thumb.addEventListener('click', function(){
 				var index = galleryThumbImages.indexOf(this);
+				settings.stepCount = index;
 				galleryJsChangeSlideTo(index);
 			}, false);
 		}
 
 	console.log(settings);
 	console.log(galleryImages);
+	console.log(settings.stepCount);
 }
 
 var galleries = document.getElementsByClassName('gallery-js');
