@@ -280,7 +280,19 @@ galleryJs = function(obj, option) {
 				galleryJsChangeSlideTo(index);
 			}, false);
 		}
-
+	// Key Press Action: Left and Right Keys
+		if(options.keyboardNav === true) {
+			document.onkeydown = checkKey;
+			function checkKey(e) {
+				e = e || window.event;
+				if (e.keyCode == '37') {
+					galleryJsPreviousSlide();
+				}
+				else if (e.keyCode == '39') {
+					galleryJsNextSlide();
+				}
+			}			
+		}
 	console.log(settings);
 	console.log(galleryImages);
 	console.log(settings.stepCount);
@@ -290,6 +302,7 @@ var galleries = document.getElementsByClassName('gallery-js');
 for(i = 0; i < galleries.length; i++) {
 	galleryJs(galleries[i], {
 		imgWidth: 960,
-		imgHeight: 480
+		imgHeight: 480,
+		keyboardNav: true
 	});
 }
