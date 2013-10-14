@@ -4,6 +4,7 @@
 .gjs-nav-container,
 .gjs-thumb-wrapper,
 .gjs-thumb-container,
+.gjs-thumb-overflow,
 .gjs-thumbnail {
 	position: relative;
 	overflow: hidden;
@@ -23,6 +24,7 @@
 }
 
 .gallery-js-wrapper {
+	border: 1px solid #EEE;
 	margin-bottom: 1.5em;
 	width: 100%;
 }
@@ -48,7 +50,8 @@
 }
 
 .gjs-thumb-container {
-	margin: 0 auto;
+	margin: 0;
+	left: 0px;
 }
 
 .gjs-thumbnail {
@@ -80,13 +83,13 @@
 	z-index: 3;
 }
 
-.gjs-nav-container .gjs-arrow {
-	width: 60px;
+.gjs-arrow {
+	background: #FFF;
 	height: 100%;
 	opacity: 0.4;
-	background: #FFF;
+	top: 0;
+	width: 60px;
 }
-
 
 .gjs-arrow {
 	position: absolute;
@@ -97,9 +100,24 @@
 }
 
 .gjs-arrow.arrow-left {
+	border-right: 1px solid #EEE;
 	left: 0;
 }
 
 .gjs-arrow.arrow-right {
+	border-left: 1px solid #EEE;
 	right: 0;
+}
+
+.gjs-link-arrow-icon {
+	color: #000;
+	font-size: 18px;
+	height: 18px;
+	left: 50%;
+	line-height: 1em;
+	margin-left: -9px;
+	margin-top: -11px;
+	position: absolute;
+	top: 50%;
+	width: 18px;
 }

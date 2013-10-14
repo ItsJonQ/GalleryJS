@@ -1,10 +1,12 @@
 var gJs = {};
 gJs.wrapperClass = 'gallery-js-wrapper';
 gJs.containerClass = 'gallery-js-container';
+gJs.overflowClass = 'gallery-js-overflow';
 gJs.imageClass = 'gjs-image';
 gJs.imageWrapperClass = 'gjs-image-wrapper';
 gJs.thumbWrapperClass = 'gjs-thumb-wrapper';
 gJs.thumbContainerClass = 'gjs-thumb-container';
+gJs.thumbOverflowClass = 'gjs-thumb-overflow';
 gJs.thumbClass = 'gjs-thumbnail';
 gJs.galleryNavContainer = 'gjs-nav-container';
 gJs.thumbArrowClass = 'gjs-arrow';
@@ -12,12 +14,18 @@ gJs.arrowClass = 'gjs-arrow';
 gJs.arrowLeftClass = 'arrow-left';
 gJs.arrowRightClass = 'arrow-right';
 gJs.arrowLinkClass = 'gjs-link-arrow';
+gJs.arrowLinkIconClass = 'gjs-link-arrow-icon';
+gJs.arrowIconClass = 'glyphicon';
+gJs.arrowIconLeftClass = 'glyphicon-chevron-left';
+gJs.arrowIconRightClass = 'glyphicon-chevron-right'
 
 gJs.imageSourceAttr = 'data-image-source';
 gJs.imageIdAttr = 'data-image-id';
 gJs.thumbAttr = 'data-gjs-thumb';
 
 gJs.currentClass = 'current';
+
+gJs.arrowWidth = 60;
 
 galleryJs = function(obj, option) {
 	var imageIndex, thumbIndex, thumbArrowIndex, arrowIndex;
@@ -52,10 +60,11 @@ galleryJs = function(obj, option) {
 		parent.insertBefore(galleryWrapper, galleryContainer);
 		galleryWrapper.appendChild(galleryContainer);
 	// Adding Class to Gallery Div
-		gallery.classList.add('gallery-js-overflow');
+		gallery.classList.add(gJs.overflowClass);
 	// Defining Wrapper/Container Variables
 		var wrapper = gallery.parentNode.parentNode;
 		var container = gallery.parentNode;
+		var wrapperWidth = wrapper.clientWidth;
 
 	// Config: the Images
 		var images = gallery.getElementsByClassName(gJs.imageClass);
@@ -121,6 +130,12 @@ galleryJs = function(obj, option) {
 			var thumbContainer = document.createElement('div');
 			thumbContainer.classList.add(gJs.thumbContainerClass);
 			thumbWrapper.appendChild(thumbContainer);
+			var thumbOverflow = document.createElement('div');
+			thumbOverflow.classList.add(gJs.thumbOverflowClass);
+			thumbContainer.appendChild(thumbOverflow);
+			var thumbContainerWidth = wrapperWidth - (gJs.arrowWidth * 2);
+			thumbContainer.style.width = thumbContainerWidth + 'px';
+			thumbContainer.style.marginLeft = gJs.arrowWidth + 'px';
 		// Creating the Thumbnails
 			for(thumbIndex = 0; thumbIndex < galleryImages.length; thumbIndex++) {
 				var thumbSource = galleryImages[thumbIndex];
@@ -130,7 +145,7 @@ galleryJs = function(obj, option) {
 					if(thumbIndex === 0) {
 						thumb.classList.add(gJs.currentClass);
 					}
-				thumbContainer.appendChild(thumb);
+				thumbOverflow.appendChild(thumb);
 				var thumbImage = document.createElement('img');
 				thumbImage.setAttribute('src', thumbSource);
 				thumbImage.setAttribute('width', 120);
@@ -141,18 +156,28 @@ galleryJs = function(obj, option) {
 			}
 
 		// Adjusting the Size of the Thumb Container
-			thumbContainer.style.width = thumbImagesWidth+'px';
+			thumbOverflow.style.width = thumbImagesWidth+'px';
 		// Creating the Thumbnail Arrows
 			for(thumbArrowIndex = 0; thumbArrowIndex < 2; thumbArrowIndex++) {
 				var thumbArrow = document.createElement('div');
 				thumbArrow.classList.add(gJs.thumbArrowClass);
+				thumbWrapper.appendChild(thumbArrow);
+				var thumbArrowLink = document.createElement('a');
+				thumbArrowLink.classList.add(gJs.arrowLinkClass);
+				thumbArrow.appendChild(thumbArrowLink);
+				var thumbArrowIcon = document.createElement('i');
+				thumbArrowIcon.classList.add(gJs.arrowIconClass);
+				thumbArrowIcon.classList.add(gJs.arrowLinkIconClass);
+				thumbArrowLink.appendChild(thumbArrowIcon);
 				if(thumbArrowIndex === 0) {
 					thumbArrow.classList.add(gJs.arrowLeftClass);
+					thumbArrowIcon.classList.add(gJs.arrowIconLeftClass);
 				} else {
 					thumbArrow.classList.add(gJs.arrowRightClass);
+					thumbArrowIcon.classList.add(gJs.arrowIconRightClass);
 				}
-				thumbWrapper.appendChild(thumbArrow);
-			}			
+			}	
+
 	// Config: The Gallery Arrows
 		var arrowContainer = document.createElement('div');
 		arrowContainer.classList.add(gJs.galleryNavContainer);
@@ -160,15 +185,21 @@ galleryJs = function(obj, option) {
 		for(arrowIndex = 0; arrowIndex < 2; arrowIndex++) {
 			var arrow = document.createElement('div');
 			arrow.classList.add(gJs.arrowClass);
-			if(arrowIndex === 0) {
-				arrow.classList.add(gJs.arrowLeftClass);
-			} else {
-				arrow.classList.add(gJs.arrowRightClass);
-			}
 			arrowContainer.appendChild(arrow);
 			var arrowLink = document.createElement('a');
 			arrowLink.classList.add(gJs.arrowLinkClass);
 			arrow.appendChild(arrowLink);
+			var arrowIcon = document.createElement('i');
+			arrowIcon.classList.add(gJs.arrowIconClass);
+			arrowIcon.classList.add(gJs.arrowLinkIconClass);
+			arrowLink.appendChild(arrowIcon);
+			if(arrowIndex === 0) {
+				arrow.classList.add(gJs.arrowLeftClass);
+				arrowIcon.classList.add(gJs.arrowIconLeftClass);
+			} else {
+				arrow.classList.add(gJs.arrowRightClass);
+				arrowIcon.classList.add(gJs.arrowIconRightClass);
+			}
 		}
 	// Config: Readjust Gallery Size
 		gJs.updateGallerySize = function() {
@@ -182,10 +213,15 @@ galleryJs = function(obj, option) {
 			gJs.updateGallerySize();
 		};
 
-	gJs.galleryInitStack();			
+	gJs.galleryInitStack();
+
+	// Action: Next Slide
+		galleryJsNextSlide = function() {
+			
+		}
 
 	// Action: Change Slide
-		galleryJsChangeSlider = function(slideIndex) {
+		galleryJsChangeSlideTo = function(slideIndex) {
 			var newImageSource = galleryImages[slideIndex];
 			var image = gallery.getElementsByTagName('img')[0];
 			image.setAttribute('src',newImageSource);
@@ -202,7 +238,7 @@ galleryJs = function(obj, option) {
 				}
 				this.classList.add(gJs.currentClass);
 				var index = galleryThumbImages.indexOf(this);
-				galleryJsChangeSlider(index);
+				galleryJsChangeSlideTo(index);
 			}, false);
 		}
 
