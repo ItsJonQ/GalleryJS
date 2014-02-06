@@ -74,7 +74,7 @@ galleryJs = function(obj, option) {
 				var source;
 				var image = images[imageIndex];
 				var imageParent = image.parentNode;
-				var imageId = imageIndex+1;
+				var imageId = imageIndex + 1;
 			// Grabbing the Image Sources
 				if(image.tagName === 'IMG') {
 					source = image.getAttribute('src');
