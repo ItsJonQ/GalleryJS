@@ -153,7 +153,7 @@ galleryJs = function(obj, option) {
 				thumbImage.setAttribute('height', 68);
 				thumb.appendChild(thumbImage);
 				thumbImagesWidth = thumbImagesWidth + thumbImage.clientWidth;
-				galleryThumbImages.push(thumb);
+				// galleryThumbImages.push(thumb);
 			}
 
 		// Adjusting the Size of the Thumb Container
@@ -217,12 +217,13 @@ galleryJs = function(obj, option) {
 	gJs.galleryInitStack();
 
 	// Action: Change Slide
-		galleryJsChangeSlideTo = function(slideIndex) {
+		galleryJsChangeSlideTo = function(slider, slideIndex) {
 			var newImageSource = galleryImages[slideIndex];
-			var image = gallery.getElementsByTagName('img')[0];
+			var image = slider.getElementsByTagName('img')[0];
 			image.setAttribute('src',newImageSource);
-			for(var i = 0; i < galleryThumbImages.length; i++) {
-				var thumb = galleryThumbImages[slideIndex];
+			var galleryThumbs = slider.parentNode.getElementsByClassName(gJs.thumbClass);
+			for(var i = 0; i < galleryThumbs.length; i++) {
+				var thumb = galleryThumbs[slideIndex];
 				var siblings = thumb.parentNode.childNodes;
 				for(var i = 0; i < siblings.length; i++) {
 					var sib = siblings[i];
@@ -233,42 +234,45 @@ galleryJs = function(obj, option) {
 		}
 
 	// Action: Previous Slide
-		galleryJsPreviousSlide = function() {
+		galleryJsPreviousSlide = function(slider) {
 			settings.stepCount = settings.stepCount - 1;
 			if(settings.stepCount <= -1) {
 				settings.stepCount = 0;
 			} else {
-				galleryJsChangeSlideTo(settings.stepCount);				
+				galleryJsChangeSlideTo(slider, settings.stepCount);				
 			}
 		}
 
 	// Action: Next Slide
-		galleryJsNextSlide = function() {
+		galleryJsNextSlide = function(slider) {
 			settings.stepCount = settings.stepCount + 1;
 			if(settings.stepCount >= settings.slideCount) {
 				settings.stepCount = settings.slideCount - 1;
 			} else {
-				galleryJsChangeSlideTo(settings.stepCount);	
+				galleryJsChangeSlideTo(slider, settings.stepCount);	
 			}			
 		}
 
 	// Click Action: Current Slide
 		arrowContainer.addEventListener('click', function(){
-			galleryJsNextSlide();
+			var gallerySlider = this.parentNode.parentNode;
+			galleryJsNextSlide(gallerySlider);
 		}, false);
 
 	// Click Action: Previous Slide
-		var galleryPrevClick = gallery.getElementsByClassName('arrow-left')[0];
+		var galleryPrevClick = gallery.getElementsByClassName(gJs.arrowLeftClass)[0];
 		galleryPrevClick.addEventListener('click', function(){
 			event.stopPropagation();
-			galleryJsPreviousSlide();
+			var gallerySlider = this.parentNode.parentNode;
+			galleryJsPreviousSlide(gallerySlider);
 		}, false);
 
 	// Click Action: Next Slide
-		var galleryNextClick = gallery.getElementsByClassName('arrow-right')[0];
+		var galleryNextClick = gallery.getElementsByClassName(gJs.arrowRightClass)[0];
 		galleryNextClick.addEventListener('click', function(){
 			event.stopPropagation();
-			galleryJsNextSlide();
+			var gallerySlider = this.parentNode.parentNode;
+			galleryJsNextSlide(gallerySlider);
 		}, false);
 
 	// Click Action: Change Slide on Thumbnail Click
